@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .registration-info {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .registration-info h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .courses-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .courses-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .courses-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .courses-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .course-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .course-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-code {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .course-name {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .course-details {
+            display: flex;
+            justify-content: space-between;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+
+        .action-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .remove-btn {
+            background-color: #e74c3c;
+        }
+
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .registered-courses {
+            border-left-color: #2ecc71;
+        }
+
+        .credit-info {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Scrollbar styling */
+        .courses-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .courses-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .courses-list::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 10px;
+        }
+
+        .courses-list::-webkit-scrollbar-thumb:hover {
+            background: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .courses-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1><i class="fas fa-university"></i> University Portal - Course Registration</h1>
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </button>
+    </div>
+<div class="card" onclick="window.location.href='courses.html'">
+    <h2><i class="fas fa-book"></i> My Courses</h2>
+    <div id="myCoursesList" style="max-height: 150px; overflow-y: auto;">
+        <!-- Registered courses will be displayed here -->
+    </div>
+</div>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="registration-info">
+            <h2>Spring 2025 Course Registration</h2>
+            <p>Register for your courses for the upcoming semester. You can select up to 18 credit hours.</p>
+        </div>
+
+        <div class="courses-container">
+            <!-- Available Courses -->
+            <div class="courses-section">
+                <h2><i class="fas fa-book-open"></i> Available Courses</h2>
+                <div class="courses-list">
+                    <div class="course-item">
+                        <div class="course-code">CS0152</div>
+                        <div class="course-name">Software Architecture</div>
+                        <div class="course-details">
+                            <span>Credits: 3</span>
+                            <span>Capacity: 25/30</span>
+                        </div>
+                        <button class="action-btn" onclick="registerCourse('CS0152')">Register</button>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-code">CS0091</div>
+                        <div class="course-name">Artificial Intelligence</div>
+                        <div class="course-details">
+                            <span>Credits: 3</span>
+                            <span>Capacity: 18/30</span>
+                        </div>
+                        <button class="action-btn" onclick="registerCourse('CS0091')">Register</button>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-code">CS2674</div>
+                        <div class="course-name">Data Structures</div>
+                        <div class="course-details">
+                            <span>Credits: 3</span>
+                            <span>Capacity: 22/30</span>
+                        </div>
+                        <button class="action-btn" onclick="registerCourse('CS2674')">Register</button>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-code">SE2214</div>
+                        <div class="course-name">Digital Logic Design</div>
+                        <div class="course-details">
+                            <span>Credits: 4</span>
+                            <span>Capacity: 15/30</span>
+                        </div>
+                        <button class="action-btn" onclick="registerCourse('SE2214')">Register</button>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-code">AI2931</div>
+                        <div class="course-name">Database Systems</div>
+                        <div class="course-details">
+                            <span>Credits: 3</span>
+                            <span>Capacity: 28/30</span>
+                        </div>
+                        <button class="action-btn" onclick="registerCourse('AI2931')">Register</button>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-code">MTH202</div>
+                        <div class="course-name">Calculus II</div>
+                        <div class="course-details">
+                            <span>Credits: 4</span>
+                            <span>Capacity: 20/30</span>
+                        </div>
+                        <button class="action-btn" onclick="registerCourse('MTH202')">Register</button>
+                    </div>
+
+                    <div class="course-item">
+                        <div class="course-code">ENG101</div>
+                        <div class="course-name">English Composition</div>
+                        <div class="course-details">
+                            <span>Credits: 3</span>
+                            <span>Capacity: 10/30</span>
+                        </div>
+                        <button class="action-btn" onclick="registerCourse('ENG101')">Register</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Registered Courses -->
+            <div class="courses-section">
+                <h2><i class="fas fa-clipboard-check"></i> My Registered Courses</h2>
+                <div class="courses-list" id="registeredCourses">
+                    <!-- Courses will be added here dynamically -->
+                </div>
+                <div class="credit-info">
+                    Total Credits: <span id="totalCredits">0</span> / 18
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample course data
+        const courses = {
+            'CS0152': { name: 'Software Architecture', credits: 3 },
+            'CS0091': { name: 'Artificial Intelligence', credits: 3 },
+            'CS2674': { name: 'Data Structures', credits: 3 },
+            'SE2214': { name: 'Digital Logic Design', credits: 4 },
+            'AI2931': { name: 'Database Systems', credits: 3 },
+            'MTH202': { name: 'Calculus II', credits: 4 },
+            'ENG101': { name: 'English Composition', credits: 3 }
+        };
+
+        // Initialize registered courses from localStorage or empty array
+        let registeredCourses = JSON.parse(localStorage.getItem('registeredCourses')) || [];
+        let totalCredits = parseInt(localStorage.getItem('totalCredits')) || 0;
+
+        // Function to go back to dashboard
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Function to register for a course
+        function registerCourse(courseCode) {
+            if (registeredCourses.includes(courseCode)) {
+                alert('You are already registered for this course!');
+                return;
+            }
+
+            // Check if adding this course would exceed credit limit
+            const newCredits = totalCredits + courses[courseCode].credits;
+            if (newCredits > 18) {
+                alert('Cannot register for this course. You would exceed the maximum credit limit of 18.');
+                return;
+            }
+
+            // Add course to registered courses
+            registeredCourses.push(courseCode);
+            totalCredits = newCredits;
+            
+            // Save to localStorage
+            localStorage.setItem('registeredCourses', JSON.stringify(registeredCourses));
+            localStorage.setItem('totalCredits', totalCredits);
+            
+            // Update the display
+            updateRegisteredCourses();
+            
+            alert(`Successfully registered for ${courseCode}: ${courses[courseCode].name}`);
+        }
+
+        // Function to remove a course
+        function removeCourse(courseCode) {
+            const index = registeredCourses.indexOf(courseCode);
+            if (index > -1) {
+                // Subtract credits
+                totalCredits -= courses[courseCode].credits;
+                
+                // Remove course from array
+                registeredCourses.splice(index, 1);
+                
+                // Save to localStorage
+                localStorage.setItem('registeredCourses', JSON.stringify(registeredCourses));
+                localStorage.setItem('totalCredits', totalCredits);
+                
+                // Update the display
+                updateRegisteredCourses();
+                
+                alert(`Removed ${courseCode}: ${courses[courseCode].name} from your schedule`);
+            }
+        }
+
+        // Function to update the registered courses display
+        function updateRegisteredCourses() {
+            const registeredCoursesContainer = document.getElementById('registeredCourses');
+            const totalCreditsElement = document.getElementById('totalCredits');
+            
+            // Clear the container
+            registeredCoursesContainer.innerHTML = '';
+            
+            // Add each registered course
+            registeredCourses.forEach(courseCode => {
+                const course = courses[courseCode];
+                const courseElement = document.createElement('div');
+                courseElement.className = 'course-item registered-courses';
+                courseElement.innerHTML = `
+                    <div class="course-code">${courseCode}</div>
+                    <div class="course-name">${course.name}</div>
+                    <div class="course-details">
+                        <span>Credits: ${course.credits}</span>
+                        <span>Status: Registered</span>
+                    </div>
+                    <button class="action-btn remove-btn" onclick="removeCourse('${courseCode}')">Remove</button>
+                `;
+                registeredCoursesContainer.appendChild(courseElement);
+            });
+            
+            // Update total credits
+            totalCreditsElement.textContent = totalCredits;
+            
+            // If no courses are registered, show a message
+            if (registeredCourses.length === 0) {
+                registeredCoursesContainer.innerHTML = '<p style="text-align: center; color: #95a5a6;">You have not registered for any courses yet.</p>';
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateRegisteredCourses();
+        });
+    </script>
+</body>
+</html>

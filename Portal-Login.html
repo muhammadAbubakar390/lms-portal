@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Portal Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+    body {
+      height: 100vh;
+      background: url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1") no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background: rgba(255,255,255,0.95);
+      padding: 40px;
+      border-radius: 10px;
+      width: 380px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+      transition: all 0.4s ease;
+    }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    .login-container input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background: #3498db;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+
+    .login-container button:hover {
+      background: #2980b9;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .toggle-link {
+      margin-top: 15px;
+      display: block;
+      color: #3498db;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container" id="loginBox">
+    <h2 id="formTitle">Portal Login</h2>
+
+    <!-- Login Form -->
+    <div id="loginForm">
+      <input type="text" id="username" placeholder="Enter Username">
+      <input type="password" id="password" placeholder="Enter Password">
+      <button onclick="portalLogin()">Login</button>
+      <p class="error-message" id="error">Invalid username or password!</p>
+      <p class="note">Default user: <b>student / 1234</b></p>
+      <span class="toggle-link" onclick="toggleForm('register')">New user? Register here</span>
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerForm" style="display:none;">
+      <input type="text" id="newUsername" placeholder="Choose Username">
+      <input type="password" id="newPassword" placeholder="Choose Password">
+      <select id="userType">
+        <option value="Student">Student</option>
+        <option value="Admin">Admin</option>
+      </select>
+      <button onclick="registerUser()">Register</button>
+      <p class="error-message" id="registerError">User already exists!</p>
+      <span class="toggle-link" onclick="toggleForm('login')">Already have an account? Login here</span>
+    </div>
+  </div>
+
+  <script>
+    // --- Setup local database (default users) ---
+    const defaultUsers = [
+      { username: "student", password: "1234", userType: "Student" },
+      { username: "admin", password: "admin123", userType: "Admin" }
+    ];
+
+    if (!localStorage.getItem("portalUsers")) {
+      localStorage.setItem("portalUsers", JSON.stringify(defaultUsers));
+    }
+
+    // --- Toggle between Login and Register ---
+    function toggleForm(type) {
+      if (type === 'register') {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("registerForm").style.display = "block";
+        document.getElementById("formTitle").innerText = "Register Account";
+      } else {
+        document.getElementById("loginForm").style.display = "block";
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("formTitle").innerText = "Portal Login";
+      }
+    }
+
+    // --- Login Function ---
+    function portalLogin() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const error = document.getElementById("error");
+
+      let users = JSON.parse(localStorage.getItem("portalUsers")) || [];
+      let foundUser = users.find(u => u.username === username && u.password === password);
+
+      if (foundUser) {
+        // Save session
+        localStorage.setItem("currentUser", JSON.stringify({ 
+          username: foundUser.username, 
+          userType: foundUser.userType, 
+          loggedIn: true 
+        }));
+
+        // Redirect to dashboard
+        window.location.href = "index.html";
+      } else {
+        error.style.display = "block";
+      }
+    }
+
+    // --- Register Function ---
+    function registerUser() {
+      const username = document.getElementById("newUsername").value.trim();
+      const password = document.getElementById("newPassword").value.trim();
+      const userType = document.getElementById("userType").value;
+      const error = document.getElementById("registerError");
+
+      let users = JSON.parse(localStorage.getItem("portalUsers")) || [];
+
+      // Check if username exists
+      if (users.find(u => u.username === username)) {
+        error.style.display = "block";
+        return;
+      }
+
+      // Save new user
+      users.push({ username, password, userType });
+      localStorage.setItem("portalUsers", JSON.stringify(users));
+
+      // Auto-login new user
+      localStorage.setItem("currentUser", JSON.stringify({ 
+        username, 
+        userType, 
+        loggedIn: true 
+      }));
+
+      // Redirect
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
