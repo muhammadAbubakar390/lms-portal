@@ -15,7 +15,7 @@ const Advisor = () => {
                 </div>
 
                 <div className="dashboard">
-                    <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
+                    <div className="card" style={{ width: '100%' }}>
                         <div style={{ textAlign: 'center' }}>
                             <img
                                 src="https://ui-avatars.com/api/?name=Dr.+Usman&background=16a085&color=fff&size=150"

@@ -7,9 +7,9 @@ const TeacherPortal = () => {
     const [activeSection, setActiveSection] = useState('dashboard');
 
     const students = [
-        { id: 'S101', name: 'John Doe', attendance: '95%', grade: 'A' },
-        { id: 'S102', name: 'Jane Smith', attendance: '90%', grade: 'B+' },
-        { id: 'S103', name: 'Mike Johnson', attendance: '85%', grade: 'A-' }
+        { id: 'S101', name: 'Muhammad Abubakar', attendance: '95%', grade: 'A' },
+        { id: 'S102', name: 'Muhammad Usman', attendance: '90%', grade: 'B+' },
+        { id: 'S103', name: 'Muhammad Abdullah', attendance: '85%', grade: 'A-' }
     ];
 
     const assignments = [
@@ -96,7 +96,7 @@ const TeacherPortal = () => {
                     <h1>Teacher Portal</h1>
                     <p>{activeSection === 'dashboard' ? 'Welcome, Professor' : activeSection === 'students' ? 'Student Management' : 'Grades & Assignments'}</p>
                 </div>
-                
+
                 {activeSection === 'dashboard' && renderDashboard()}
                 {activeSection === 'students' && renderStudents()}
                 {activeSection === 'grades' && renderGrades()}
