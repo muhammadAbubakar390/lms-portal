@@ -17,63 +17,57 @@ const Login = () => {
         }
     }, [navigate]);
 
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
 
-        try {
-            const endpoint = '/api/auth/login';
-            const payload = activeTab === 'student'
-                ? { username, password }
-                : { email, password };
+        // Mock login logic for frontend-only deployment (Vercel)
+        let mockUser = {
+            id: 1,
+            username: username || 'User',
+            email: email || 'user@example.com',
+            role: 'Student',
+            loggedIn: true,
+            token: 'mock-jwt-token'
+        };
 
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('currentUser', JSON.stringify({ ...data.user, token: data.token, loggedIn: true }));
-                if (data.user.role === 'Admin') {
-                    navigate('/admin');
-                } else if (data.user.role === 'Teacher') {
-                    navigate('/teacher');
-                } else {
-                    navigate('/');
-                }
+        if (activeTab === 'staff') {
+            // Check for hardcoded staff credentials
+            if (email === 'admin@university.edu' && password === 'admin123') {
+                mockUser.role = 'Admin';
+                mockUser.username = 'Admin User';
+            } else if (email === 'teacher@university.edu' && password === 'password123') {
+                mockUser.role = 'Teacher';
+                mockUser.username = 'Teacher User';
             } else {
-                alert(data.message || 'Invalid credentials!');
+                alert('Invalid staff credentials! \n\nTry: \nadmin@university.edu / admin123 \nteacher@university.edu / password123');
+                return;
             }
-        } catch (error) {
-            console.error(error);
-            alert('Server error, please try again later.');
+        } else {
+            // For students, let them login with any credentials for demo purposes
+            if (!username || !password) {
+                alert('Please enter username and password');
+                return;
+            }
+            mockUser.role = 'Student';
+            mockUser.username = username;
+        }
+
+        localStorage.setItem('currentUser', JSON.stringify(mockUser));
+        
+        if (mockUser.role === 'Admin') {
+            navigate('/admin');
+        } else if (mockUser.role === 'Teacher') {
+            navigate('/teacher');
+        } else {
+            navigate('/');
         }
     };
 
-    const handleRegister = async (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
-
-        try {
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                alert('Account created successfully!');
-                setIsRegistering(false);
-            } else {
-                alert(data.message || 'Registration failed');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('Server error, please try again later.');
-        }
+        // Mock registration logic
+        alert('Account created successfully (Mock)! You can now login.');
+        setIsRegistering(false);
     };
 
     return (

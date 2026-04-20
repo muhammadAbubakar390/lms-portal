@@ -20,60 +20,18 @@ const AdminPortal = () => {
     const [classTime, setClassTime] = useState('');
     const [room, setRoom] = useState('');
 
-    const handleAddUser = async (e) => {
+    const handleAddUser = (e) => {
         e.preventDefault();
-        try {
-            const res = await fetch('/api/admin/user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token': currentUser.token
-                },
-                body: JSON.stringify({ role: userType, username, password, email })
-            });
-            const data = await res.json();
-            if (res.ok) {
-                alert('User added successfully');
-                setUsername(''); setPassword(''); setEmail('');
-            } else {
-                alert(data.message || 'Error adding user');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('Server error');
-        }
+        // Mock user creation
+        alert(`User ${username} (${userType}) added successfully (Mock)!`);
+        setUsername(''); setPassword(''); setEmail('');
     };
 
-    const handleAddCourse = async (e) => {
+    const handleAddCourse = (e) => {
         e.preventDefault();
-        try {
-            const res = await fetch('/api/admin/course', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token': currentUser.token
-                },
-                body: JSON.stringify({
-                    course_code: courseCode,
-                    course_name: courseName,
-                    teacher_name: teacherName,
-                    section,
-                    class_day: classDay,
-                    class_time: classTime,
-                    room
-                })
-            });
-            const data = await res.json();
-            if (res.ok) {
-                alert('Course created successfully');
-                setCourseCode(''); setCourseName(''); setTeacherName(''); setSection(''); setClassDay(''); setClassTime(''); setRoom('');
-            } else {
-                alert(data.message || 'Error creating course');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('Server error');
-        }
+        // Mock course creation
+        alert(`Course ${courseCode}: ${courseName} created successfully (Mock)!`);
+        setCourseCode(''); setCourseName(''); setTeacherName(''); setSection(''); setClassDay(''); setClassTime(''); setRoom('');
     };
 
     return (

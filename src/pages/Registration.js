@@ -8,31 +8,36 @@ const Registration = () => {
     const [availableCourses, setAvailableCourses] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const user = JSON.parse(localStorage.getItem('currentUser'));
-                if (!user || !user.token) return;
-
-                // Fetch registered courses
-                const myRes = await fetch('/api/courses/mycourses', {
-                    headers: { 'x-auth-token': user.token }
-                });
-                const myData = await myRes.json();
-                if (myRes.ok) {
-                    setRegisteredCourses(myData.map(c => c.course_code));
-                }
-
-                // Fetch all available courses mapped by admin
-                const allRes = await fetch('/api/courses', {
-                    headers: { 'x-auth-token': user.token }
-                });
-                const allData = await allRes.json();
-                if (allRes.ok) {
-                    setAvailableCourses(allData);
-                }
-            } catch (e) { console.error(e); }
-        };
-        fetchData();
+        // Mock data for frontend-only deployment
+        const mockAvailable = [
+            {
+                course_code: 'CS101',
+                course_name: 'Introduction to Programming',
+                teacher_name: 'Dr. John Smith',
+                section: 'A',
+                class_day: 'Monday',
+                class_time: '09:00 AM - 11:00 AM'
+            },
+            {
+                course_code: 'MATH202',
+                course_name: 'Calculus II',
+                teacher_name: 'Prof. Alice Johnson',
+                section: 'B',
+                class_day: 'Tuesday',
+                class_time: '11:00 AM - 01:00 PM'
+            },
+            {
+                course_code: 'ENG105',
+                course_name: 'Communication Skills',
+                teacher_name: 'Ms. Sarah Parker',
+                section: 'C',
+                class_day: 'Wednesday',
+                class_time: '02:00 PM - 04:00 PM'
+            }
+        ];
+        
+        setAvailableCourses(mockAvailable);
+        setRegisteredCourses(['CS101']); // Default one registered for demo
     }, []);
 
     const toggleCourse = (code) => {
@@ -42,27 +47,10 @@ const Registration = () => {
         setRegisteredCourses(updated);
     };
 
-    const handleSave = async () => {
-        try {
-            const user = JSON.parse(localStorage.getItem('currentUser'));
-            const res = await fetch('/api/courses/mycourses', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token': user.token
-                },
-                body: JSON.stringify({ courses: registeredCourses })
-            });
-            if (res.ok) {
-                alert('Courses successfully registered!');
-                navigate('/');
-            } else {
-                alert('Error saving courses');
-            }
-        } catch (e) {
-            console.error(e);
-            alert('Server error');
-        }
+    const handleSave = () => {
+        // Mock save logic
+        alert('Courses successfully registered (Mock)!');
+        navigate('/');
     };
 
     return (

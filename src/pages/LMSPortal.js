@@ -7,20 +7,26 @@ const LMSPortal = () => {
     const [registeredCourses, setRegisteredCourses] = useState([]);
 
     useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const user = JSON.parse(localStorage.getItem('currentUser'));
-                if (!user || !user.token) return;
-                const res = await fetch('/api/courses/mycourses', {
-                    headers: { 'x-auth-token': user.token }
-                });
-                const data = await res.json();
-                if (res.ok) {
-                    setRegisteredCourses(data);
-                }
-            } catch (e) { console.error(e); }
-        };
-        fetchCourses();
+        // Mock data for frontend-only deployment
+        const mockCourses = [
+            {
+                course_code: 'CS101',
+                course_name: 'Introduction to Programming',
+                teacher_name: 'Dr. John Smith'
+            },
+            {
+                course_code: 'MATH202',
+                course_name: 'Calculus II',
+                teacher_name: 'Prof. Alice Johnson'
+            },
+            {
+                course_code: 'ENG105',
+                course_name: 'Communication Skills',
+                teacher_name: 'Ms. Sarah Parker'
+            }
+        ];
+        
+        setRegisteredCourses(mockCourses);
     }, []);
 
     return (

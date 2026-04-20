@@ -8,19 +8,35 @@ const Dashboard = () => {
     const [registeredCourses, setRegisteredCourses] = useState([]);
 
     useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                if (!currentUser || !currentUser.token) return;
-                const res = await fetch('/api/courses/mycourses', {
-                    headers: { 'x-auth-token': currentUser.token }
-                });
-                const data = await res.json();
-                if (res.ok) {
-                    setRegisteredCourses(data);
-                }
-            } catch (e) { console.error(e); }
-        };
-        fetchCourses();
+        // Mock data for frontend-only deployment
+        const mockCourses = [
+            {
+                course_code: 'CS101',
+                course_name: 'Introduction to Programming',
+                teacher_name: 'Dr. John Smith',
+                class_day: 'Monday',
+                class_time: '09:00 AM - 11:00 AM',
+                room: 'Lab 1'
+            },
+            {
+                course_code: 'MATH202',
+                course_name: 'Calculus II',
+                teacher_name: 'Prof. Alice Johnson',
+                class_day: 'Tuesday',
+                class_time: '11:00 AM - 01:00 PM',
+                room: 'Room 302'
+            },
+            {
+                course_code: 'ENG105',
+                course_name: 'Communication Skills',
+                teacher_name: 'Ms. Sarah Parker',
+                class_day: 'Wednesday',
+                class_time: '02:00 PM - 04:00 PM',
+                room: 'Hall B'
+            }
+        ];
+        
+        setRegisteredCourses(mockCourses);
     }, [currentUser]);
 
 

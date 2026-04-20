@@ -11,51 +11,19 @@ const TeacherProfile = () => {
     const [profilePic, setProfilePic] = useState('');
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const res = await fetch('/api/auth/profile', {
-                    headers: { 'x-auth-token': currentUser.token }
-                });
-                const data = await res.json();
-                if (res.ok) {
-                    setUsername(data.user.username);
-                    setProfilePic(data.user.profile_pic || '');
-                }
-            } catch (e) { console.error(e); }
-        };
-        fetchProfile();
-    }, [currentUser.token]);
+        // Mock profile data
+        const mockUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+        setUsername(mockUser.username || 'Teacher User');
+        setProfilePic(mockUser.profile_pic || '');
+    }, []);
 
-    const handleUpdate = async (e) => {
+    const handleUpdate = (e) => {
         e.preventDefault();
-        try {
-            const updateData = {};
-            if (username) updateData.username = username;
-            if (password) updateData.password = password;
-            if (profilePic !== undefined) updateData.profile_pic = profilePic;
-
-            const res = await fetch('/api/auth/profile', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token': currentUser.token
-                },
-                body: JSON.stringify(updateData)
-            });
-            const data = await res.json();
-            if (res.ok) {
-                alert('Profile updated successfully!');
-                setPassword(''); // clear password field after sumbit
-                // Update local storage username mapping
-                const updatedUser = { ...currentUser, username: data.user.username, profile_pic: data.user.profile_pic };
-                localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-            } else {
-                alert(data.message || 'Error updating profile');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('Server error');
-        }
+        // Mock update logic
+        const updatedUser = { ...currentUser, username, profile_pic: profilePic };
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+        alert('Profile updated successfully (Mock)!');
+        setPassword('');
     };
 
     return (
